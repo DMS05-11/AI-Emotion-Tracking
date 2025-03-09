@@ -1,6 +1,6 @@
 streamlit
 streamlit-webrtc
-opencv-contrib-python-headless
+opencv-contrib-python-headless==4.5.5.64
 mediapipe
 tensorflow
 keras
