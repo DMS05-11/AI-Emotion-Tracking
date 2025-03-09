@@ -1,9 +1,3 @@
 streamlit
-streamlit-webrtc
 opencv-contrib-python-headless==4.7.0.72
-mediapipe==0.10.3
-tensorflow-cpu==2.15.0
-keras==3.8.0
 numpy
-matplotlib
-protobuf==3.20.*
