@@ -1,9 +1,7 @@
-streamlit  # For the web-based UI
-opencv-python  # For image processing and webcam access
-mediapipe  # For attention tracking using FaceMesh
-tensorflow  # For deep learning model (Emotion Detection)
-keras  # Required for TensorFlow model handling
-numpy  # For numerical operations
-matplotlib  # For plotting training results
-librosa  # For future speech emotion analysis
-sounddevice  # For real-time audio processing
+streamlit
+opencv-python
+mediapipe
+tensorflow
+keras
+numpy
+matplotlib
