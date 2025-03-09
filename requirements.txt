@@ -1,8 +1,8 @@
+tensorflow==2.9.0
+keras==2.9.0
+opencv-contrib-python-headless==4.7.0.72
 streamlit
 streamlit-webrtc
-opencv-contrib-python-headless==4.7.0.72
 mediapipe
-tensorflow
-keras
 numpy
 matplotlib

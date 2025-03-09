@@ -1,5 +1,4 @@
 import os
-import av
 import streamlit as st
 import cv2
 import numpy as np
@@ -10,26 +9,36 @@ from streamlit_webrtc import webrtc_streamer, VideoTransformerBase
 # Get the absolute path to the model
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "emotion_model.h5")
 
-# Check if model file exists
+# Check if the model file exists before loading
 if not os.path.exists(MODEL_PATH):
     st.error("❌ Model file 'emotion_model.h5' not found. Please upload it.")
+    model = None
 else:
-    model = load_model(MODEL_PATH)
+    try:
+        model = load_model(MODEL_PATH)
+    except Exception as e:
+        st.error(f"❌ Error loading model: {e}")
+        model = None
 
-# Load AI Model
+# Load AI Models
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 mp_face_mesh = mp.solutions.face_mesh
 face_mesh = mp_face_mesh.FaceMesh(min_detection_confidence=0.5, min_tracking_confidence=0.5)
 
 def detect_emotion(frame):
     """Detects emotion from a given frame."""
+    if model is None:
+        return "Model not loaded"
+    
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)
     emotion_label = "Neutral"
+    
     for (x, y, w, h) in faces:
         roi = cv2.resize(gray[y:y+h, x:x+w], (48, 48)) / 255.0
         roi = np.reshape(roi, (1, 48, 48, 1))
         emotion_label = ["Angry", "Disgust", "Fear", "Happy", "Sad", "Surprise", "Neutral"][np.argmax(model.predict(roi))]
+    
     return emotion_label
 
 def analyze_attention(frame):
@@ -55,6 +64,9 @@ def main():
     """Runs the Streamlit UI."""
     st.title("🎭 AI-Powered Emotion & Attention Tracking for ADHD")
     st.write("Real-time emotion detection and attention tracking simulation")
+
+    if model is None:
+        st.warning("⚠ Model not loaded. Please ensure 'emotion_model.h5' is uploaded.")
 
     # Use Streamlit WebRTC for video streaming
     webrtc_streamer(key="camera", video_transformer_factory=VideoTransformer)
